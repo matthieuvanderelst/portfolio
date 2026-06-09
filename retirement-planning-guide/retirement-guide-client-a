@@ -1,0 +1,137 @@
+# Retirement Planning Guide — Client A
+*Created: June 2026 | A practical guide for a couple approaching retirement at 62, built as an educational framework. All names and identifying details are anonymized. For precise calculations, consult a fiduciary or fee-only financial advisor.*
+
+---
+
+## Context and purpose
+
+Client A is turning 62 and planning retirement. Her spouse is still working, earns a strong salary, and holds company shares. He plans to transition around age 65, either staying in his current role or moving to something less stressful. This guide covers the 5 main retirement risks, a 3-bucket withdrawal strategy, Social Security timing, Roth conversions, RMDs, and a 3-year cash reserve framework.
+
+---
+
+## The 5 risks retirees go broke in the first 5 years
+
+### 1. Sequence of return risk
+A major market drop in the first few years of retirement can permanently damage a portfolio even if markets recover. The order of returns matters as much as the average.
+
+**Their edge:** The spouse is still working. They are not forced to sell in a downturn. The 3-year cash reserve handles living expenses while the portfolio heals. Even a lower-stress part-time role after 65 reduces portfolio pressure significantly.
+
+### 2. Spending too much too soon
+The retirement honeymoon effect. Travel, renovations, gifting — early overspending compounds quietly.
+
+**The fix:** Set a clear monthly income target and review actual spending annually.
+
+### 3. Not enough cash reserve
+Without a liquidity buffer, retirees panic-sell at the worst moment.
+
+**The plan:** 3-year reserve split between HYSA (6-12 months, liquid) and Treasury bills (remaining 2 years, state and local tax exempt).
+
+### 4. Claiming Social Security too early
+Every year of delay after full retirement age = approximately 8% more per year, guaranteed.
+
+| Age | Benefit |
+|-----|---------|
+| 62 | ~58% of full benefit |
+| 65 | ~73% |
+| 67 | 100% (full retirement age) |
+| 70 | ~124% — maximum |
+
+There is no single right answer. The decision depends on health, income needs, and other income sources. Use the Social Security timing analyzer: https://ft-socialsecuritytiming.lovable.app/
+
+### 5. Supporting adult children
+Unplanned financial support to family is a common and underappreciated cause of retirement shortfalls. Any support should be a conscious, planned decision — not a default.
+
+---
+
+## Monthly income target
+
+Income in retirement comes from multiple sources starting at different times:
+
+- Pension(s) — one or more depending on career history
+- Social Security (delayed during gap years — covered by cash reserve or taxable accounts in the interim)
+- Portfolio withdrawals for the remainder
+
+**During gap years:** The Social Security portion comes from HYSA or taxable accounts. The goal is to keep income low to maximize Roth conversion room.
+
+The interactive version of this guide includes adjustable sliders so the user can model their own pension amounts and see the required portfolio withdrawal update in real time, privately.
+
+---
+
+## The 3-bucket withdrawal strategy
+
+Withdraw in this order: **Taxable first → Tax-deferred second → Tax-free last**
+
+### Bucket 1 — Taxable accounts (brokerage)
+- Funded with after-tax dollars
+- Dividends and gains taxable each year
+- Assets held over 1 year taxed at lower capital gains rates
+- Use first to give other buckets more time to compound
+
+### Bucket 2 — Tax-deferred (401k, IRA, 403b)
+- Every dollar out taxed as ordinary income (higher than capital gains)
+- Subject to RMDs starting at age 73
+- Use strategic Roth conversions during low-income gap years to reduce future RMD exposure
+
+### Bucket 3 — Tax-free (Roth IRA, Roth 401k, HSA)
+- No tax on growth, dividends, or withdrawals
+- No RMDs on Roth IRAs
+- The longer it sits untouched, the more powerful it becomes
+- Only spend when other buckets are exhausted
+
+---
+
+## What is an RMD?
+
+A required minimum distribution (RMD) is a government rule that forces you to withdraw a minimum amount from a traditional IRA or 401k each year starting at age 73, whether you need the money or not. Those withdrawals are taxed as income. The larger the IRA at 73, the larger the forced withdrawal. This is sometimes called the RMD time bomb.
+
+**The fix:** Use the gap years (retirement to Social Security) to convert traditional IRA to Roth while income is low. This shrinks future RMDs and grows the tax-free bucket.
+
+---
+
+## Roth conversion strategy
+
+Between retirement and when Social Security begins, taxable income is temporarily low. This is the window to convert tax-deferred money to Roth at a lower tax rate.
+
+**Why delay Social Security simultaneously:** Delaying SS keeps income lower during conversion years, which means a lower tax bracket and more conversion room.
+
+**The result:** Higher SS monthly benefit, smaller traditional IRA, smaller future RMDs, and a much larger Roth account growing tax-free.
+
+**Golden rule:** Always pay the Roth conversion tax from outside the IRA using separate cash savings. Never pull from the IRA itself to pay the tax — that reduces the very balance being moved to tax-free status.
+
+---
+
+## The 3-year cash reserve
+
+**Example at $12,000/month income target:**
+
+| Timeframe | Amount needed |
+|-----------|--------------|
+| Annual | $144,000 |
+| 3-year reserve | $432,000 |
+
+| Account | Purpose | Notes |
+|---------|---------|-------|
+| HYSA | 6-12 months liquid | 4-5% yield, fully accessible |
+| Treasury bills (T-bills) | Remaining ~2 years | State and local tax exempt, rolling 3-6 month terms |
+
+**Why 3 years works:** The average bear market lasts 9-18 months. Three years means never selling investments during a downturn. The portfolio recovers on its own timeline.
+
+---
+
+## The 5-step playbook
+
+1. **Know your buckets** — Label every account: taxable, tax-deferred, or tax-free
+2. **Follow the withdrawal order** — Taxable first, tax-deferred second, tax-free last
+3. **Use gap years for Roth conversions** — Live off cash or taxable income while income is low. Pay conversion tax from outside the IRA
+4. **Be intentional about Social Security timing** — Run the numbers, understand the tradeoffs, decide based on income needs and health. Revisit the decision together when the working spouse transitions
+5. **Review every year and stay flexible** — Income, balances, tax bracket, spending. They spent decades building this — be just as intentional taking it out
+
+---
+
+## Resources
+
+- Social Security timing analyzer: https://ft-socialsecuritytiming.lovable.app/
+- For precise calculations: consult a fiduciary or fee-only financial advisor
+
+---
+*This guide was built as an educational framework using Claude (Sonnet 4.6) and is not personalized financial advice.*
