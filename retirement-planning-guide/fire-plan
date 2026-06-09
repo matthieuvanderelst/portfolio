@@ -1,0 +1,122 @@
+# FIRE Plan — Early Retirement at 50
+*Created: June 2026 | A personal early retirement framework targeting $2M by age 50 using a 3-bucket strategy. Built as both a planning tool and a portfolio demonstration of financial modeling with AI.*
+
+---
+
+## The target
+
+| Item | Value |
+|------|-------|
+| Portfolio target at 50 | $2,000,000 |
+| Retirement age (Person A) | 50 |
+| Retirement age (Person B) | 44 |
+| Annual spend age 50-67 | $100,000 |
+| Annual spend age 67+ | ~$75,000 (retirement smile: ~3%/yr natural decline) |
+| Social Security estimate at 67 | $43,000/year |
+| Income gap from portfolio at 67 | ~$56,000/year from Roth (tax-free) |
+
+---
+
+## The 3-bucket system (early retirement version)
+
+### Bucket 1 — Cash and safety (0-5 years)
+- **Accounts:** HYSA, T-bills, short bonds
+- **Target at 50:** ~$500,000 (5 years of expenses)
+- **Purpose:** Daily living expenses. Never in equities. Refilled by bucket 2 when markets are positive
+- T-bills are state and local tax exempt
+
+### Bucket 2 — Growth and stability (5-10 years)
+- **Accounts:** Taxable brokerage (index funds, QQQM)
+- **Target at 50:** ~$660,000-720,000
+- **Purpose:** Balances growth with stability. Harvests gains in up years to refill bucket 1. Left alone in down markets. This is the mechanism that eliminates sequence of return risk
+
+### Bucket 3 — Long-term growth (15+ years, untouched)
+- **Accounts:** Roth IRA, Roth 401k
+- **Target at 50:** ~$300,000-360,000
+- **Purpose:** High equity exposure. Left completely untouched until 67. Compounds tax-free for 17 years
+- **Projected at 67 (7% return):** ~$1M+ combined
+
+---
+
+## Roth IRA projection
+
+**Starting balances:** ~$14,000 each
+**Contribution:** Maxed annually ($7,000/person)
+**Assumed return:** 7% (S&P 500 long-term average)
+**Stop contributing at:** 50 unless part-time or consulting income continues
+
+| Milestone | Person A age | Person B age | Combined Roth |
+|-----------|-------------|-------------|---------------|
+| Today | 36 | 30 | ~$28,000 |
+| Retirement | 50 | 44 | ~$350,000-400,000 |
+| Social Security / Roth draw | 67 | 61 | ~$1,000,000-1,100,000 |
+
+**Key insight:** Person B is 6 years younger. Their Roth keeps compounding for 6 additional years after Person A turns 67, significantly extending the combined tax-free pool.
+
+---
+
+## Two-phase spending plan
+
+### Phase 1 — Age 50 to 67 (gap years)
+- Annual spend: $100,000
+- Source: Bucket 1 (cash) and bucket 2 (brokerage)
+- Social Security: not claimed yet
+- Action: Roth conversions from any traditional IRA while income is low
+- No earned income means no new Roth contributions unless part-time or consulting income continues
+
+### Phase 2 — Age 67 onward
+- Social Security: $43,000/year
+- Roth withdrawals: ~$56,000/year (tax-free)
+- Total: ~$99,000/year
+- Spending naturally declines ~3%/year (retirement smile curve)
+
+---
+
+## Timeline and key milestones
+
+| Age (A) | Age (B) | Action |
+|---------|---------|--------|
+| 36 | 30 | Max Roth IRA annually. Build brokerage. Let Roth compound untouched |
+| 50 | 44 | Retire. Stop contributing. Live off bucket 1. Begin Roth conversions |
+| 50-67 | 44-61 | Gap years. Harvest bucket 2 in up markets. Convert IRA to Roth. Keep income low for conversion room |
+| 55 | 49 | Rule of 55 applies to 401k if separation from employer occurs at 55+ |
+| 59.5 | 53.5 | Penalty-free IRA withdrawals available without 72t rule |
+| 67 | 61 | Claim Social Security. Begin Roth withdrawals. Reduce spend to ~$75k |
+| 73 | 67 | RMD age. Traditional IRA should be minimal if conversions done well during gap years |
+
+---
+
+## Key rules for early retirement
+
+### Roth contribution window
+Requires earned income to contribute. Window closes at retirement unless part-time or consulting income continues. Even modest self-employment income keeps both Roth accounts open and contributions flowing.
+
+### Rule of 55
+Leaving an employer in the year you turn 55 or later allows penalty-free withdrawals from that employer's 401k only. Does not apply to IRAs or prior 401ks. Not relevant for a retirement at 50.
+
+### 72t (SEPP — Substantially Equal Periodic Payments)
+Allows early IRA withdrawals before age 59.5 without the 10% penalty. Requires committing to a fixed IRS-calculated withdrawal schedule for at least 5 years or until 59.5, whichever is longer. Cannot be changed once started. Key tool for bridging ages 50 to 59.5.
+
+---
+
+## Open risks and planning items
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Health insurance gap (50-65) | Partially hedged | ACA marketplace in the US. Potential part-time Belgium residency and access to Belgian mutuelle. Confirm residency requirements and US expat tax implications |
+| Private company shares | Illiquid | Do not count toward $2M target until liquidity event. Monitor for tender offers, IPO, or acquisition. Sell a meaningful portion at first opportunity |
+| Future children | Deferred 2-3 years | Will reduce net savings rate by ~3-5 percentage points during early years. Model separately when timing is clearer |
+| House purchase | Deferred | Down payment will reduce liquid savings by $40,000-100,000+. Plan as a one-time bucket 1 drawdown. Likely pushes retirement date out 1-2 years |
+| Income parity | In progress | Plan assumes both partners at $120,000-130,000. Currently one partner is at target. Closing the gap is the highest-leverage near-term action |
+
+---
+
+## Resources
+
+- Social Security timing analyzer: https://ft-socialsecuritytiming.lovable.app/
+- IRS SEPP / 72t information: irs.gov
+- ACA marketplace: healthcare.gov
+- For precise planning: fee-only fiduciary financial advisor
+
+---
+*This plan was built using Claude (Sonnet 4.6) as a modeling and documentation tool. It is not personalized financial advice.*
