@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gym Health Score | Matthieu Vander Elst</title>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --border: #242424;
+    --text: #f0f0f0;
+    --mid: #888;
+    --muted: #555;
+    --orange: #E8622A;
+    --orange-dim: rgba(232,98,42,0.15);
+    --cyan: #00E5D1;
+    --cyan-dim: rgba(0,229,209,0.12);
+    --green: #2ECC71;
+    --yellow: #F4C542;
+    --red: #E74C3C;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px 60px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Portfolio Banner */
+  .portfolio-banner {
+    background: rgba(0,229,209,0.07);
+    border: 1px solid rgba(0,229,209,0.2);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 11.5px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+  .portfolio-banner strong {
+    color: var(--cyan);
+    letter-spacing: 0.5px;
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 0 8px;
+    gap: 6px;
+  }
+  .logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+  }
+  .tagline {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--orange);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* Live score */
+  .score-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+  }
+  .score-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .score-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .score-number {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text);
+    transition: color 0.3s;
+  }
+  .score-max {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .score-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+  .pillar-mini {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--mid);
+  }
+  .pillar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .pillar-dot.active { background: var(--orange); }
+
+  /* Question card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+  .card-question {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .card-context {
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .option {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 13.5px;
+    color: var(--text);
+    text-align: left;
+  }
+  .option:hover {
+    border-color: var(--orange);
+    background: var(--orange-dim);
+  }
+  .option.selected {
+    border-color: var(--orange);
+    background: var(--orange-dim);
+    color: var(--text);
+  }
+  .option-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--muted);
+    flex-shrink: 0;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .option.selected .option-dot {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+  .option.selected .option-dot::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    gap: 10px;
+  }
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.18s;
+  }
+  .btn-back {
+    background: var(--surface);
+    color: var(--mid);
+    border: 1px solid var(--border);
+  }
+  .btn-back:hover { color: var(--text); border-color: var(--mid); }
+  .btn-next {
+    background: var(--orange);
+    color: white;
+  }
+  .btn-next:hover { opacity: 0.88; }
+  .btn-next:disabled {
+    background: var(--border);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+
+  /* Intake */
+  .intake-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .intake-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .intake-sub {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .field input, .field select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.18s;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus {
+    border-color: var(--orange);
+  }
+  .field input::placeholder { color: var(--muted); }
+
+  /* Results */
+  .results-header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    text-align: center;
+  }
+  .results-score-big {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .results-status {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+  .results-name {
+    font-size: 13px;
+    color: var(--mid);
+    margin-top: 2px;
+  }
+
+  .pillar-breakdown {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .pillar-breakdown h3 {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .pillar-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .pillar-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+  .pillar-name { color: var(--text); font-weight: 600; }
+  .pillar-score { color: var(--mid); }
+  .pillar-track {
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .pillar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s ease;
+  }
+
+  .prescription {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .prescription h3 {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .rx-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .rx-num {
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .btn-cta {
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: 0.5px;
+    transition: opacity 0.18s;
+  }
+  .btn-cta:hover { opacity: 0.88; }
+
+  .btn-restart {
+    background: transparent;
+    color: var(--mid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    font-size: 12px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.18s;
+  }
+  .btn-restart:hover { color: var(--text); border-color: var(--mid); }
+
+  /* Admin */
+  .admin-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .admin-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--cyan);
+  }
+  .admin-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .lead-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .lead-name { font-size: 13px; font-weight: 600; }
+  .lead-meta { font-size: 11px; color: var(--mid); }
+  .lead-score { font-size: 12px; font-weight: 700; }
+  .no-leads {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  /* Footer tap zone */
+  .footer {
+    margin-top: 20px;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 1px;
+    cursor: default;
+    user-select: none;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Portfolio Banner -->
+  <div class="portfolio-banner">
+    <strong>Portfolio Demo</strong> &nbsp;·&nbsp;
+    Built for CrossFit industry events (Wodapalooza, Miami) to qualify gym owner leads in under 3 minutes. Leads are stored locally in your browser. Tap the footer 5 times to open the admin panel.
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">MATTHIEU VANDER ELST</div>
+    <div class="tagline">Gym Health Score</div>
+  </div>
+
+  <!-- Screens -->
+  <div id="screen-intake">
+    <div class="intake-card">
+      <div class="intake-title">What's your gym's health score?</div>
+      <div class="intake-sub">12 questions. 3 minutes. You'll see your score across Retention, Revenue, Acquisition, and Systems — plus your top 3 gaps.</div>
+      <div class="field">
+        <label>Your name</label>
+        <input type="text" id="inp-name" placeholder="First name" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Gym name</label>
+        <input type="text" id="inp-gym" placeholder="CrossFit ___" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Members (approx.)</label>
+        <select id="inp-size">
+          <option value="">Select range</option>
+          <option value="Under 50">Under 50</option>
+          <option value="50-100">50-100</option>
+          <option value="100-200">100-200</option>
+          <option value="200+">200+</option>
+        </select>
+      </div>
+      <button class="btn-cta" id="start-btn">Start the audit &rarr;</button>
+    </div>
+  </div>
+
+  <div id="screen-quiz" class="hidden">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="progress-label">Question 1 of 12</span>
+          <span id="pillar-label">Retention</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:8%"></div></div>
+      </div>
+
+      <!-- Live score -->
+      <div class="score-badge">
+        <div class="score-left">
+          <div class="score-label">Health Score</div>
+          <div class="score-number" id="live-score">0<span class="score-max">/100</span></div>
+        </div>
+        <div class="score-pillars">
+          <div class="pillar-mini"><div class="pillar-dot" id="dot-r"></div>Retention</div>
+          <div class="pillar-mini"><div class="pillar-dot" id="dot-rv"></div>Revenue</div>
+          <div class="pillar-mini"><div class="pillar-dot" id="dot-a"></div>Acquisition</div>
+          <div class="pillar-mini"><div class="pillar-dot" id="dot-s"></div>Systems</div>
+        </div>
+      </div>
+
+      <!-- Question card -->
+      <div class="card">
+        <div class="card-eyebrow" id="q-pillar">Retention</div>
+        <div class="card-question" id="q-text"></div>
+        <div class="card-context" id="q-context"></div>
+        <div class="options" id="q-options"></div>
+      </div>
+
+      <!-- Nav -->
+      <div class="nav">
+        <button class="btn btn-back" id="btn-back">Back</button>
+        <button class="btn btn-next" id="btn-next" disabled>Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-results" class="hidden">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div class="results-header">
+        <div class="score-label" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Health Score</div>
+        <div class="results-score-big" id="res-score">0</div>
+        <div class="results-status" id="res-status"></div>
+        <div class="results-name" id="res-name"></div>
+      </div>
+
+      <div class="pillar-breakdown">
+        <h3>Breakdown by pillar</h3>
+        <div id="pillar-bars"></div>
+      </div>
+
+      <div class="prescription">
+        <h3>Your top priorities</h3>
+        <div id="rx-list"></div>
+      </div>
+
+      <button class="btn-cta" id="cta-book">Talk to Matthieu about this &rarr;</button>
+      <button class="btn-restart" id="btn-restart">Audit another gym</button>
+    </div>
+  </div>
+
+  <div id="screen-admin" class="hidden">
+    <div class="admin-panel">
+      <div class="admin-header">
+        <div class="admin-title">Lead Dashboard</div>
+        <button class="admin-close" id="admin-close">&times;</button>
+      </div>
+      <div id="admin-stats" style="display:flex;gap:16px;flex-wrap:wrap;"></div>
+      <div id="admin-leads"></div>
+    </div>
+  </div>
+
+  <div class="footer" id="footer-tap">UNBROKEN DYNAMICS LLC &nbsp;·&nbsp; GYM AUDIT SYSTEM</div>
+</div>
+
+<script>
+const QUESTIONS = [
+  // Retention (0-2)
+  {
+    pillar: 'Retention', text: 'Do you track your monthly member churn rate?',
+    context: 'Churn is members lost ÷ total members. Healthy CrossFit gyms sit below 5% monthly.',
+    options: [
+      { label: 'Yes, I track it and it is below 5%', score: 3 },
+      { label: 'Yes, I track it but it is above 5%', score: 1 },
+      { label: 'I have a rough idea but do not track it formally', score: 0.5 },
+      { label: 'I do not track churn', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Retention', text: 'What happens when a member misses two weeks in a row?',
+    context: 'Proactive outreach between day 10-14 of absence is one of the highest-ROI retention actions.',
+    options: [
+      { label: 'We have an automated or manual check-in process', score: 3 },
+      { label: 'A coach may notice and say something', score: 1.5 },
+      { label: 'We wait for them to come back on their own', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Retention', text: 'Do members have a structured 90-day onboarding experience?',
+    context: 'The first 90 days determine whether a member stays or leaves. Most gyms have no formal process.',
+    options: [
+      { label: 'Yes — goal-setting call, check-in at 30 days, progress review at 90', score: 3 },
+      { label: 'We have a foundations course but nothing after', score: 1.5 },
+      { label: 'We introduce them to the gym and then they are on their own', score: 0 },
+    ]
+  },
+  // Revenue (3-5)
+  {
+    pillar: 'Revenue', text: 'Has your monthly recurring revenue (MRR) grown in the last 6 months?',
+    context: 'MRR growth requires either more members or higher revenue per member — ideally both.',
+    options: [
+      { label: 'Yes, growing steadily', score: 3 },
+      { label: 'Flat — roughly the same as 6 months ago', score: 1.5 },
+      { label: 'Declined', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Revenue', text: 'Do you have revenue streams beyond standard memberships?',
+    context: 'Personal training, nutrition coaching, retail, and events can add 20-40% on top of membership MRR.',
+    options: [
+      { label: 'Yes, 2 or more additional revenue streams', score: 3 },
+      { label: 'Yes, one additional stream (e.g. PT only)', score: 1.5 },
+      { label: 'Memberships only', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Revenue', text: 'Do you offer annual memberships or prepaid options?',
+    context: 'Annual memberships reduce churn risk and improve cash flow. They also signal member commitment.',
+    options: [
+      { label: 'Yes, and more than 20% of members use them', score: 3 },
+      { label: 'Yes, but very few members take them up', score: 1.5 },
+      { label: 'No annual or prepaid options', score: 0 },
+    ]
+  },
+  // Acquisition (6-8)
+  {
+    pillar: 'Acquisition', text: 'How do most new members find you?',
+    context: 'Word-of-mouth is the most common answer. Knowing the split helps you invest in the right channels.',
+    options: [
+      { label: 'Mix of channels — I know my breakdown', score: 3 },
+      { label: 'Mostly word-of-mouth — I do not track sources', score: 1.5 },
+      { label: 'I am not sure where new members come from', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Acquisition', text: 'What is your trial or intro offer conversion rate?',
+    context: 'A well-designed intro program converts 50-70% of qualified prospects. Below 30% is a signal.',
+    options: [
+      { label: 'Above 50% — I track this closely', score: 3 },
+      { label: 'Around 30-50% — rough estimate', score: 1.5 },
+      { label: 'Below 30% or I do not track it', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Acquisition', text: 'Do you have an active referral program?',
+    context: 'Member referrals have the highest conversion rate and lowest CAC of any acquisition channel.',
+    options: [
+      { label: 'Yes, with an incentive structure and we actively promote it', score: 3 },
+      { label: 'We offer something but rarely remind members about it', score: 1.5 },
+      { label: 'No referral program', score: 0 },
+    ]
+  },
+  // Systems (9-11)
+  {
+    pillar: 'Systems', text: 'Are you using your gym management software to its full capability?',
+    context: 'Most gyms use 20-30% of their software. Automation, reporting, and communication features sit idle.',
+    options: [
+      { label: 'Yes — automations, reporting, billing, and communication all active', score: 3 },
+      { label: 'Partially — we use it for billing and class booking, not much else', score: 1.5 },
+      { label: 'Mostly manual — the software is just a calendar', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Systems', text: 'Do you have documented SOPs for your coaching staff?',
+    context: 'SOPs reduce owner dependency and make it possible to scale, delegate, or take a vacation.',
+    options: [
+      { label: 'Yes — onboarding, class format, member communication all documented', score: 3 },
+      { label: 'Some things are written down but it is inconsistent', score: 1.5 },
+      { label: 'It all lives in my head', score: 0 },
+    ]
+  },
+  {
+    pillar: 'Systems', text: 'If you stepped away for two weeks today, what would happen?',
+    context: 'Owner dependency is the most common hidden risk in independent gym businesses.',
+    options: [
+      { label: 'The gym would run fine — staff know what to do', score: 3 },
+      { label: 'It would survive but some things would slip', score: 1.5 },
+      { label: 'It would be a problem — I am involved in everything', score: 0 },
+    ]
+  },
+];
+
+const PILLARS = ['Retention','Revenue','Acquisition','Systems'];
+const PILLAR_COLORS = { Retention: '#E8622A', Revenue: '#00E5D1', Acquisition: '#F4C542', Systems: '#2ECC71' };
+
+const PRESCRIPTIONS = {
+  Retention: [
+    'Set up a 10-day absence alert in your gym software and assign a coach to follow up',
+    'Create a 90-day member journey with a goal-setting call, 30-day check-in, and progress review',
+    'Start tracking monthly churn — even a rough number unlocks better decisions',
+  ],
+  Revenue: [
+    'Introduce a personal training or nutrition add-on to your highest-tenure members first',
+    'Create an annual membership option with a 10% discount and promote it at your next community event',
+    'Review your pricing — most gym owners have not raised rates in 2+ years despite inflation',
+  ],
+  Acquisition: [
+    'Launch a member referral program with a simple incentive (one free month, branded gear)',
+    'Set up UTM tracking or ask every new member at intake how they heard about you',
+    'Redesign your trial experience with a conversion goal — not just "come try a class"',
+  ],
+  Systems: [
+    'Book a 90-minute session to map which software features you are not using — start with automations',
+    'Write one SOP this week — start with your new member onboarding process',
+    'Identify the one thing that only you can do, and document it so someone else could do it',
+  ]
+};
+
+let current = 0;
+let answers = new Array(12).fill(null);
+let userData = {};
+let footerTaps = 0;
+
+function getScores() {
+  const scores = { Retention: 0, Revenue: 0, Acquisition: 0, Systems: 0 };
+  const maxes = { Retention: 0, Revenue: 0, Acquisition: 0, Systems: 0 };
+  QUESTIONS.forEach((q, i) => {
+    const maxOpt = Math.max(...q.options.map(o => o.score));
+    maxes[q.pillar] += maxOpt;
+    if (answers[i] !== null) scores[q.pillar] += q.options[answers[i]].score;
+  });
+  return { scores, maxes };
+}
+
+function calcTotal() {
+  const { scores, maxes } = getScores();
+  let total = 0, maxTotal = 0;
+  PILLARS.forEach(p => { total += scores[p]; maxTotal += maxes[p]; });
+  return Math.round((total / maxTotal) * 100);
+}
+
+function pillarPercent(pillar) {
+  const { scores, maxes } = getScores();
+  return maxes[pillar] ? Math.round((scores[pillar] / maxes[pillar]) * 100) : 0;
+}
+
+function statusFromScore(s) {
+  if (s >= 85) return { label: 'Healthy', color: '#2ECC71' };
+  if (s >= 70) return { label: 'Stable', color: '#00E5D1' };
+  if (s >= 55) return { label: 'At Risk', color: '#F4C542' };
+  if (s >= 40) return { label: 'Critical', color: '#E8622A' };
+  return { label: 'Emergency', color: '#E74C3C' };
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-pillar').textContent = q.pillar;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-context').textContent = q.context;
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  q.options.forEach((o, i) => {
+    const el = document.createElement('button');
+    el.className = 'option' + (answers[current] === i ? ' selected' : '');
+    el.innerHTML = `<div class="option-dot"></div><span>${o.label}</span>`;
+    el.addEventListener('click', () => selectOption(i));
+    opts.appendChild(el);
+  });
+
+  document.getElementById('progress-label').textContent = `Question ${current + 1} of 12`;
+  document.getElementById('pillar-label').textContent = q.pillar;
+  document.getElementById('progress-fill').style.width = `${((current + 1) / 12) * 100}%`;
+  document.getElementById('btn-next').disabled = answers[current] === null;
+  document.getElementById('btn-next').textContent = current === 11 ? 'See results' : 'Next';
+  document.getElementById('btn-back').style.opacity = current === 0 ? '0.3' : '1';
+
+  const score = calcTotal();
+  document.getElementById('live-score').innerHTML = `${score}<span class="score-max">/100</span>`;
+  PILLARS.forEach((p, i) => {
+    const key = ['r','rv','a','s'][i];
+    const answeredAny = QUESTIONS.filter(qq => qq.pillar === p).some((_, qi) => {
+      const idx = QUESTIONS.findIndex(x => x === qq);
+      return answers[idx] !== null;
+    });
+    document.getElementById(`dot-${key}`).classList.toggle('active', answeredAny);
+  });
+}
+
+function selectOption(i) {
+  answers[current] = i;
+  document.querySelectorAll('.option').forEach((el, j) => {
+    el.classList.toggle('selected', j === i);
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function showResults() {
+  const score = calcTotal();
+  const status = statusFromScore(score);
+  const lead = {
+    name: userData.name,
+    gym: userData.gym,
+    size: userData.size,
+    score,
+    status: status.label,
+    date: new Date().toLocaleDateString(),
+    pillars: {}
+  };
+  PILLARS.forEach(p => lead.pillars[p] = pillarPercent(p));
+
+  // Save lead
+  const leads = JSON.parse(localStorage.getItem('gym_leads') || '[]');
+  leads.unshift(lead);
+  localStorage.setItem('gym_leads', JSON.stringify(leads));
+
+  // Render
+  document.getElementById('res-score').textContent = score;
+  document.getElementById('res-score').style.color = status.color;
+  document.getElementById('res-status').textContent = status.label;
+  document.getElementById('res-status').style.color = status.color;
+  document.getElementById('res-name').textContent = `${userData.gym} · ${userData.size} members`;
+
+  // Pillars
+  const bars = document.getElementById('pillar-bars');
+  bars.innerHTML = '';
+  PILLARS.forEach(p => {
+    const pct = pillarPercent(p);
+    bars.innerHTML += `
+      <div class="pillar-row" style="margin-bottom:10px">
+        <div class="pillar-meta">
+          <span class="pillar-name">${p}</span>
+          <span class="pillar-score">${pct}/100</span>
+        </div>
+        <div class="pillar-track">
+          <div class="pillar-fill" style="width:${pct}%;background:${PILLAR_COLORS[p]}"></div>
+        </div>
+      </div>`;
+  });
+
+  // Prescriptions — weakest pillars first
+  const sorted = [...PILLARS].sort((a, b) => pillarPercent(a) - pillarPercent(b));
+  const rx = document.getElementById('rx-list');
+  rx.innerHTML = '';
+  sorted.slice(0, 3).forEach((p, i) => {
+    const msg = PRESCRIPTIONS[p][0];
+    rx.innerHTML += `<div class="rx-item"><span class="rx-num">${i+1}</span><span>${msg}</span></div>`;
+  });
+
+  show('results');
+}
+
+function show(name) {
+  ['intake','quiz','results','admin'].forEach(s => {
+    document.getElementById(`screen-${s}`).classList.toggle('hidden', s !== name);
+  });
+}
+
+function renderAdmin() {
+  const leads = JSON.parse(localStorage.getItem('gym_leads') || '[]');
+  const stats = document.getElementById('admin-stats');
+  if (leads.length > 0) {
+    const avg = Math.round(leads.reduce((s, l) => s + l.score, 0) / leads.length);
+    stats.innerHTML = `
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;">
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Leads</div>
+        <div style="font-size:28px;font-weight:800;color:var(--cyan)">${leads.length}</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;">
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Avg Score</div>
+        <div style="font-size:28px;font-weight:800;color:${statusFromScore(avg).color}">${avg}</div>
+      </div>`;
+  } else {
+    stats.innerHTML = '';
+  }
+
+  const leadsEl = document.getElementById('admin-leads');
+  if (leads.length === 0) {
+    leadsEl.innerHTML = '<div class="no-leads">No leads yet. Complete the audit to capture your first one.</div>';
+    return;
+  }
+  leadsEl.innerHTML = leads.map(l => `
+    <div class="lead-card">
+      <div class="lead-name">${l.name} — ${l.gym}</div>
+      <div class="lead-meta">${l.size} members · ${l.date}</div>
+      <div class="lead-score" style="color:${statusFromScore(l.score).color}">${l.score}/100 · ${l.status}</div>
+    </div>`).join('');
+}
+
+// Events
+document.getElementById('start-btn').addEventListener('click', () => {
+  const name = document.getElementById('inp-name').value.trim();
+  const gym = document.getElementById('inp-gym').value.trim();
+  const size = document.getElementById('inp-size').value;
+  if (!name || !gym || !size) { alert('Please fill in all fields to continue.'); return; }
+  userData = { name, gym, size };
+  current = 0;
+  answers = new Array(12).fill(null);
+  renderQuestion();
+  show('quiz');
+});
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (current < 11) { current++; renderQuestion(); }
+  else showResults();
+});
+
+document.getElementById('btn-back').addEventListener('click', () => {
+  if (current > 0) { current--; renderQuestion(); }
+});
+
+document.getElementById('btn-restart').addEventListener('click', () => { show('intake'); });
+document.getElementById('cta-book').addEventListener('click', () => {
+  window.open('https://calendar.app.google/7UzBeZZfCAexLdv99', '_blank');
+});
+
+document.getElementById('admin-close').addEventListener('click', () => {
+  show(document.getElementById('screen-results').classList.contains('hidden') ? 'intake' : 'results');
+});
+
+document.getElementById('footer-tap').addEventListener('click', () => {
+  footerTaps++;
+  if (footerTaps >= 5) { footerTaps = 0; renderAdmin(); show('admin'); }
+});
+</script>
+</body>
+</html>
