@@ -546,7 +546,7 @@
       <div class="field">
         <label>Members (approx.)</label>
         <select id="inp-size">
-          <option value="">Select range</option>
+          
           <option value="Under 50">Under 50</option>
           <option value="50-100">50-100</option>
           <option value="100-200">100-200</option>
@@ -843,10 +843,7 @@ function renderQuestion() {
   document.getElementById('live-score').innerHTML = `${score}<span class="score-max">/100</span>`;
   PILLARS.forEach((p, i) => {
     const key = ['r','rv','a','s'][i];
-    const answeredAny = QUESTIONS.filter(qq => qq.pillar === p).some((_, qi) => {
-      const idx = QUESTIONS.findIndex(x => x === qq);
-      return answers[idx] !== null;
-    });
+    const answeredAny = QUESTIONS.some((q, idx) => q.pillar === p && answers[idx] !== null);
     document.getElementById(`dot-${key}`).classList.toggle('active', answeredAny);
   });
 }
@@ -952,12 +949,14 @@ function renderAdmin() {
 }
 
 // Events
-document.getElementById('start-btn').addEventListener('click', () => {
+document.getElementById('start-btn').addEventListener('click', function() {
   const name = document.getElementById('inp-name').value.trim();
   const gym = document.getElementById('inp-gym').value.trim();
   const size = document.getElementById('inp-size').value;
-  if (!name || !gym || !size) { alert('Please fill in all fields to continue.'); return; }
-  userData = { name, gym, size };
+  if (!name) { document.getElementById('inp-name').focus(); return; }
+  if (!gym) { document.getElementById('inp-gym').focus(); return; }
+  if (!size) { document.getElementById('inp-size').focus(); return; }
+  userData = { name: name, gym: gym, size: size };
   current = 0;
   answers = new Array(12).fill(null);
   renderQuestion();
